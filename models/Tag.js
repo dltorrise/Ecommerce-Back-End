@@ -6,26 +6,13 @@ class Tag extends Model {}
 
 Tag.init(
   {
-    // define columns
-    rockMusic: {
-      type: DataTypes.STRING
+    id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      primaryKey: true,
+      autoIncrement: true
     },
-    popMusic: {
-      type: DataTypes.STRING
-    },
-    blue: {
-      type: DataTypes.STRING
-    },
-    green: {
-      type: DataTypes.STRING
-    },
-    white: {
-      type: DataTypes.STRING
-    },
-    gold: {
-      type: DataTypes.STRING
-    },
-    popCulture: {
+    tag_name: {
       type: DataTypes.STRING
     }
   },

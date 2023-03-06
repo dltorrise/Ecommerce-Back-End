@@ -8,19 +8,20 @@ router.get('/', async (req, res) => {
   // find all products
   // be sure to include its associated Category and Tag data
   const products = await Product.findAll({
-    include: ['Shirts', 'Shorts', 'Music', 'Hats', 'Shoes', 'product_id', 'tag_id', 'rockMusic', 'popMusic', 'blue', 'green', 'white', 'gold', 'popCulture'] //not sure how much of this I need
+    include: [Category, Tag] //not sure how much of this I need
   })
+  res.status(200).json(products)
 });
 
 // get one product
 router.get('/:id', async (req, res) => {
   // find a single product by its `id`
   // be sure to include its associated Category and Tag data
-  if (req.params.id===tag_id) {
-    const product = await Product.findAll({
-      include: ['Shirts', 'Shorts', 'Music', 'Hats', 'Shoes', 'product_id', 'tag_id', 'rockMusic', 'popMusic', 'blue', 'green', 'white', 'gold', 'popCulture'] 
-    })
-  }
+  const product = await Product.findOne({
+    where: {id: req.params.id},
+    include: [Category, Tag]
+  })
+  res.status(200).json(product)
 });
 
 // create new product
@@ -101,9 +102,10 @@ router.delete('/:id', async (req, res) => {
   // delete one product by its `id` value
   await Product.destroy({
     where: {
-      product_id: req.params.id
+      product_id: req.params.id //is it product id or category id?
     }
   })
+  res.json('Deleted')
 });
 
 module.exports = router;

@@ -7,42 +7,57 @@ const { Tag, Product, ProductTag } = require('../../models');
 router.get('/', async (req, res) => {
   // find all tags
   const tags = await ProductTag.findAll({
-    include: ['product_name', 'category_id', 'stock', 'price']
+    include: [Product] //will bring in all categories via index.js file 
   })
+  res.status(200).json(tags)
   // be sure to include its associated Product data
 });
 
 router.get('/:id', async (req, res) => {
-  if (req.params.id===tag_id) {
-    const tag = await ProductTag.findAll({
-      include: ['product_name', 'category_id', 'stock', 'price']
-    })
-  }
+  const tag = await ProductTag.findOne({
+    where: {id: req.params.id},
+    include: [Product]
+  })
+  res.status(200).json(tag)
+
   // find a single tag by its `id`
   // be sure to include its associated Product data
 });
 
 router.post('/', async (req, res) => {
   // create a new tag
-  const tag = await ProductTag.create({tag_id: req.body})
+  try {
+    const tag = await ProductTag.create(req.body)
+    res.status(200).json(tag)
+    } catch(err) {
+      console.log(err);
+      res.status(400).json(err);
+    }
 });
 
 router.put('/:id', async (req, res) => {
   // update a tag's name by its `id` value
-  await ProductTag.update({tag_name: req.body}, {
-    where: {
-      tag_id: req.params.id
-    }
-  }) //not sure what to do if it autoincrememnts
+  try {
+    const tag = await ProductTag.update(req.body, {
+      where: {
+        id: req.params.id
+      }
+    }) 
+    res.json(tag)
+  } catch(err) {
+    console.log(err);
+    res.status(400).json(err);
+  }
 });
 
 router.delete('/:id', async (req, res) => {
   // delete on tag by its `id` value
   await ProductTag.destroy({
     where: {
-      tag_id: req.params.id
+      category_id: req.params.id //not sure
     }
   })
+  res.status(200).json('Deleted')
 });
 
 module.exports = router;
