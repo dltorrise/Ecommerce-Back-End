@@ -1,33 +1,35 @@
 const router = require('express').Router();
-const { UPSERT } = require('sequelize/types/lib/query-types');
+//const { UPSERT } = require('sequelize/types/lib/query-types');
 const { Tag, Product, ProductTag } = require('../../models');
+
+//import sequelize
+const sequelize = require('../../config/connection.js');
 
 // The `/api/tags` endpoint
 
 router.get('/', async (req, res) => {
   // find all tags
-  const tags = await ProductTag.findAll({
+    // be sure to include its associated Product data
+  const tags = await Tag.findAll({
     include: [Product] //will bring in all categories via index.js file 
   })
   res.status(200).json(tags)
-  // be sure to include its associated Product data
 });
 
 router.get('/:id', async (req, res) => {
-  const tag = await ProductTag.findOne({
+  // find a single tag by its `id`
+  // be sure to include its associated Product data
+  const tag = await Tag.findOne({
     where: {id: req.params.id},
     include: [Product]
   })
   res.status(200).json(tag)
-
-  // find a single tag by its `id`
-  // be sure to include its associated Product data
 });
 
 router.post('/', async (req, res) => {
   // create a new tag
   try {
-    const tag = await ProductTag.create(req.body)
+    const tag = await Tag.create(req.body)
     res.status(200).json(tag)
     } catch(err) {
       console.log(err);
@@ -38,7 +40,7 @@ router.post('/', async (req, res) => {
 router.put('/:id', async (req, res) => {
   // update a tag's name by its `id` value
   try {
-    const tag = await ProductTag.update(req.body, {
+    const tag = await Tag.update(req.body, {
       where: {
         id: req.params.id
       }
@@ -52,9 +54,9 @@ router.put('/:id', async (req, res) => {
 
 router.delete('/:id', async (req, res) => {
   // delete on tag by its `id` value
-  await ProductTag.destroy({
+  await Tag.destroy({
     where: {
-      category_id: req.params.id //not sure
+      id: req.params.id 
     }
   })
   res.status(200).json('Deleted')

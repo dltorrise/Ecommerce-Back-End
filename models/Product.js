@@ -3,6 +3,7 @@ const { Model, DataTypes } = require('sequelize');
 // import our database connection from config.js
 const sequelize = require('../config/connection');
 
+
 // Initialize Product model (table) by extending off Sequelize's Model class
 class Product extends Model {}
 
@@ -39,7 +40,7 @@ Product.init(
       type: DataTypes.INTEGER,
       allowNull: true, //if you delete products don't want to delete whole category column
       references: {
-        model: Category,
+        model: 'category',
         key: 'id'
       }
     }

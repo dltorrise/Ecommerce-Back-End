@@ -1,6 +1,9 @@
 const router = require('express').Router();
 const { Category, Product } = require('../../models');
 
+//import sequelize
+const sequelize = require('../../config/connection.js');
+
 // The `/api/categories` endpoint
 
 router.get('/', async (req, res) => {
@@ -9,7 +12,7 @@ router.get('/', async (req, res) => {
   const categories = await Category.findAll({
     include: [Product] //will bring in all categories via index.js file 
   })
-  res.json(categories)
+  res.status(200).json(categories)
 });
 
 router.get('/:id', async (req, res) => {
@@ -19,7 +22,7 @@ router.get('/:id', async (req, res) => {
       where: {id: req.params.id},
       include: [Product]
     })
-    res.json(category)
+    res.status(200).json(category)
 
 });
 
@@ -42,7 +45,7 @@ router.put('/:id', async (req, res) => {
     where: {
       id: req.params.id
     }
-  }) //not sure what to do if it autoincrememnts
+  }) 
   res.json(category)
 } catch(err) {
   console.log(err);
@@ -54,7 +57,7 @@ router.delete('/:id', async (req, res) => {
   // delete a category by its `id` value
   await Category.destroy({
     where: {
-      category_id: req.params.id
+      id: req.params.id
     }
   })
   res.json('Deleted')

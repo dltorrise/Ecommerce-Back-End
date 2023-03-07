@@ -1,6 +1,9 @@
 const router = require('express').Router();
 const { Product, Category, Tag, ProductTag } = require('../../models');
 
+//import sequelize
+const sequelize = require('../../config/connection.js');
+
 // The `/api/products` endpoint
 
 // get all products
@@ -8,7 +11,7 @@ router.get('/', async (req, res) => {
   // find all products
   // be sure to include its associated Category and Tag data
   const products = await Product.findAll({
-    include: [Category, Tag] //not sure how much of this I need
+    include: [Category, {model: Tag, through: ProductTag}] 
   })
   res.status(200).json(products)
 });
@@ -19,7 +22,7 @@ router.get('/:id', async (req, res) => {
   // be sure to include its associated Category and Tag data
   const product = await Product.findOne({
     where: {id: req.params.id},
-    include: [Category, Tag]
+    include: [Category, {model: Tag, through: ProductTag}] 
   })
   res.status(200).json(product)
 });
@@ -27,11 +30,11 @@ router.get('/:id', async (req, res) => {
 // create new product
 router.post('/', (req, res) => {
   /* req.body should look like this...
-    {
-      product_name: "Basketball",
-      price: 200.00,
-      stock: 3,
-      tagIds: [1, 2, 3, 4]
+ {
+      "product_name": "Denim Jacket",
+      "price": 20.00,
+      "stock": 5,
+      "tagIds": [1, 3, 8]
     }
   */
   Product.create(req.body)
@@ -57,6 +60,7 @@ router.post('/', (req, res) => {
 });
 
 // update product
+//written to update tags not to change information about product
 router.put('/:id', (req, res) => {
   // update product data
   Product.update(req.body, {
@@ -102,10 +106,10 @@ router.delete('/:id', async (req, res) => {
   // delete one product by its `id` value
   await Product.destroy({
     where: {
-      product_id: req.params.id //is it product id or category id?
+      id: req.params.id 
     }
   })
-  res.json('Deleted')
+  res.status(200).json('Deleted')
 });
 
 module.exports = router;
