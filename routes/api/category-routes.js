@@ -46,7 +46,7 @@ router.put('/:id', async (req, res) => {
       id: req.params.id
     }
   }) 
-  res.json(category)
+  res.status(200).json(category)
 } catch(err) {
   console.log(err);
   res.status(400).json(err);
@@ -60,7 +60,7 @@ router.delete('/:id', async (req, res) => {
       id: req.params.id
     }
   })
-  res.json('Deleted')
+  res.status(200).json('Deleted')
 });
 
 module.exports = router;

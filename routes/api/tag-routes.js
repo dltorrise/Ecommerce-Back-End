@@ -45,7 +45,7 @@ router.put('/:id', async (req, res) => {
         id: req.params.id
       }
     }) 
-    res.json(tag)
+    res.status(200).json(tag)
   } catch(err) {
     console.log(err);
     res.status(400).json(err);
