@@ -6,7 +6,7 @@
   - ii. [General Information](#general-information)
     - i. [Installation](#installation)
     - ii. [Usage](#usage)
-  - iii. [Screenshot](#screenshot-and-demo-video)
+  - iii. [Screenshot and Demo Video](#screenshot-and-demo-video)
   - iv. [Acknowledgements](#acknowledgements)
 
   ## Description
@@ -30,9 +30,9 @@
 
 ## Screenshot and Demo Video
 
-![Screenshot of application]()
+![Screenshot of application](./public/images/screenshot.png)
 
-[Link to Demo Video here]()
+[Link to Demo Video here](https://youtu.be/Va0nBU40kPc)
 
 ## Acknowledgements
 
